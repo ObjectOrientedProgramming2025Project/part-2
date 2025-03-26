@@ -1,0 +1,73 @@
+import csv
+
+class Student:  
+    def __init__(self, student_id, name):
+        self.student_id = student_id
+        self.name = name
+        self.courses = {} #dictionary to store courses the student is enrolled in
+
+    def add_course(self, course): #enrolls the student into a course if not already enrolled
+        if course.course_code not in self.courses:
+            self.courses[course.course_code] = [] #empty list for potential grades
+        else:
+            print("Student already enrolled in this course.")
+
+class Course:
+    def __init__(self, course_code, course_name):
+        self.course_code = course_code
+        self.course_name = course_name
+
+class StudentGradingSystem:
+    def __init__(self):
+        self.students = {} #stores students with student_id as key
+        self.courses = {} #stores courses with course_code as key
+
+    def add_student(self):
+        student_id = input("Enter student ID: ") #prompts user to enter their student ID
+        if student_id in self.students:
+            print("Student ID already exists.")
+            return
+        name = input("Enter student name: ") #prompts user to enter their name
+        self.students[student_id] = Student(student_id, name)
+
+    def add_course(self): #this will prompt the user to enter their course code and course name and add it to the system
+        course_code = input("Enter course code: ") 
+        if course_code in self.courses:
+            print("Course already exists.")
+            return
+        course_name = input("Enter course name: ")
+        self.courses[course_code] = Course(course_code, course_name)
+
+    def enroll_student(self): #used to enroll a student in a course based on their input
+        student_id = input("Enter student ID: ")
+        if student_id not in self.students:
+            print("Student not found.")
+            return
+        course_code = input("Enter course code: ")
+        if course_code not in self.courses:
+            print("Course not found.")
+            return
+        self.students[student_id].add_course(self.courses[course_code])
+
+    def menu(self): #displays the menu for the grading system and handles user choices
+        while True:
+            print("\nStudent Grading System")
+            print("1. Add Student")
+            print("2. Add Course")
+            print("3. Enroll Student in Course")
+            print("4. Exit")
+            choice = input("Enter your choice: ")
+            if choice == "1":
+                self.add_student()
+            elif choice == "2":
+                self.add_course()
+            elif choice == "3":
+                self.enroll_student()
+            elif choice == "4":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
+if __name__ == "__main__": #initializes and runs the grading system
+    system = StudentGradingSystem()
+    system.menu()
